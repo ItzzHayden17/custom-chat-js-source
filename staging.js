@@ -31,7 +31,7 @@
                 style="padding: 20px; height: 300px; overflow-y: auto; font-size: 14px;">
                 
                 <div style="display:flex; flex-direction:row;">
-                    <img src="https://amplifin.co.za/wp-content/uploads/2022/10/accent_0007-copy.png"
+                    <img src="https://amplifin.co.za/wp-content/uploads/2025/07/Amplifin-Yellow-N-20px.png"
                          width="25px" height="25px" style="margin: 5px;">
                     <div style="color:#555;background:#f5f5f5;padding:10px;border-radius:20px;">
                         Whether you’re looking for the right collection solution or need quick support, we’re here to help.<br><br>
