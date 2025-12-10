@@ -42,8 +42,8 @@ const chatToggle = document.getElementById("chatToggle");
     fetch("https://chat-widget-test.onrender.com/json").then(response =>{
         statusCode = response.status
         
-        if (statusCode == 400) {
-            window.location = "https://api.whatsapp.com/send/?phone=27675974601";
+        if (statusCode == 200) {
+            window.location = "https://api.whatsapp.com/send/?phone=27716025710";
         } else{
             const jessicaNotAvailable = document.createElement("div");
                 jessicaNotAvailable.innerHTML = `
@@ -131,4 +131,5 @@ const chatToggle = document.getElementById("chatToggle");
 
     support.addEventListener("click",()=>{
         window.location = "https://api.whatsapp.com/send/?phone=27675974601"
+
     })
