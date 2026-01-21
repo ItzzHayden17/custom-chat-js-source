@@ -1,17 +1,19 @@
 (function () {
   "use strict";
 
-  const NS = ""af-chat-v2"";
-  const id = (v) => `${NS}-${v}`;
+  const ROOT_ID = "af-chat-widget-v3";
+
+  // 🔁 Remove any existing instance (prevents stale widget)
+  const existing = document.getElementById(ROOT_ID);
+  if (existing) existing.remove();
 
   const widgetHTML = `
-  <div id="${id("root")}" style="
+  <div id="${ROOT_ID}" style="
     position:fixed;
     bottom:20px;
     right:20px;
     z-index:9999;
 
-    /* 🔒 HARD BOUNDARY */
     font-family:Arial, sans-serif;
     font-size:14px;
     line-height:1.4;
@@ -23,7 +25,8 @@
     -webkit-text-size-adjust:none;
   ">
 
-    <button id="${id("toggle")}" type="button" style="
+    <!-- TOGGLE -->
+    <button id="af-chat-toggle" type="button" style="
       all:unset;
       box-sizing:border-box;
       width:60px;
@@ -39,7 +42,8 @@
       justify-content:center;
     ">💬</button>
 
-    <div id="${id("box")}" style="
+    <!-- CHAT BOX -->
+    <div id="af-chat-box" style="
       box-sizing:border-box;
       width:320px;
       height:420px;
@@ -51,9 +55,6 @@
       right:0;
       display:none;
       overflow:hidden;
-      font-family:inherit;
-      font-size:inherit;
-      line-height:inherit;
     ">
 
       <!-- HEADER -->
@@ -62,80 +63,66 @@
         color:#fff;
         padding:10px 20px;
         box-sizing:border-box;
-        font-family:inherit;
       ">
-        <div style="display:flex;">
-          <div style="display:flex;flex-direction:column;">
-            <h1 style="
-              margin:0;
-              font-size:18px;
-              font-weight:600;
-              letter-spacing:-0.45px;
-              line-height:1.2;
-              font-family:inherit;
-            ">
-              <img
-                src="https://amplifin.co.za/wp-content/uploads/2022/09/Amplifin-Logo.png"
-                width="140"
-                height="25"
-                alt="Amplifin"
-                style="
-                  display:block;
-                  width:140px;
-                  height:25px;
-                  object-fit:contain;
-                "
-              >
-            </h1>
-            <p style="
-              margin:0;
-              font-size:14px;
-              line-height:14px;
-              font-family:inherit;
-            ">How can we Amplify your day?</p>
-          </div>
-        </div>
+        <h1 style="
+          margin:0;
+          font-size:18px;
+          font-weight:600;
+          letter-spacing:-0.45px;
+          line-height:1.2;
+        ">
+          <img
+            src="https://amplifin.co.za/wp-content/uploads/2022/09/Amplifin-Logo.png"
+            width="140"
+            height="25"
+            alt="Amplifin"
+            style="
+              width:140px !important;
+              height:25px !important;
+              max-width:none !important;
+              max-height:none !important;
+              display:block;
+              object-fit:contain;
+            "
+          >
+        </h1>
+        <p style="
+          margin:0;
+          font-size:14px;
+          line-height:14px;
+        ">How can we Amplify your day?</p>
       </div>
 
       <!-- MESSAGES -->
-      <div id="${id("messages")}" style="
-        box-sizing:border-box;
+      <div id="af-chat-messages" style="
         padding:20px;
         height:300px;
         overflow-y:auto;
-        font-family:inherit;
-        font-size:14px;
-        line-height:1.4;
-        color:#555;
+        box-sizing:border-box;
       ">
 
-        <div style="
-          display:flex;
-          align-items:flex-start;
-          box-sizing:border-box;
-        ">
+        <!-- INTRO -->
+        <div style="display:flex;align-items:flex-start;">
           <img
             src="https://amplifin.co.za/wp-content/uploads/2025/07/Amplifin-Yellow-N-20px.png"
             width="25"
             height="25"
             alt=""
             style="
+              width:25px !important;
+              height:25px !important;
+              max-width:none !important;
+              max-height:none !important;
               display:block;
-              width:25px;
-              height:25px;
-              margin:5px;
               flex-shrink:0;
               object-fit:contain;
+              margin:5px;
             "
           >
           <div style="
             background:#f5f5f5;
             padding:10px;
             border-radius:20px;
-            font-family:inherit;
-            font-size:14px;
-            line-height:1.4;
-            color:#555;
             max-width:220px;
             box-sizing:border-box;
           ">
@@ -144,14 +131,14 @@
           </div>
         </div>
 
+        <!-- CTA -->
         <div style="
           display:flex;
           justify-content:flex-end;
           gap:6px;
           margin-top:10px;
-          box-sizing:border-box;
         ">
-          <button id="${id("support")}" type="button" style="
+          <button id="af-chat-support" type="button" style="
             all:unset;
             box-sizing:border-box;
             border:1px solid #FBC100;
@@ -160,12 +147,10 @@
             padding:10px 14px;
             color:#FBC100;
             font-size:14px;
-            line-height:1;
             cursor:pointer;
-            text-align:center;
           ">Support Team</button>
 
-          <button id="${id("sales")}" type="button" style="
+          <button id="af-chat-sales" type="button" style="
             all:unset;
             box-sizing:border-box;
             border:1px solid #FBC100;
@@ -174,9 +159,7 @@
             padding:10px 14px;
             color:#FBC100;
             font-size:14px;
-            line-height:1;
             cursor:pointer;
-            text-align:center;
           ">Sales Team</button>
         </div>
       </div>
@@ -184,14 +167,14 @@
   </div>
   `;
 
-  if (document.getElementById(id("root"))) return;
   document.body.insertAdjacentHTML("beforeend", widgetHTML);
 
-  const toggle = document.getElementById(id("toggle"));
-  const box = document.getElementById(id("box"));
-  const messages = document.getElementById(id("messages"));
-  const support = document.getElementById(id("support"));
-  const sales = document.getElementById(id("sales"));
+  // ---- Logic ----
+  const toggle = document.getElementById("af-chat-toggle");
+  const box = document.getElementById("af-chat-box");
+  const messages = document.getElementById("af-chat-messages");
+  const support = document.getElementById("af-chat-support");
+  const sales = document.getElementById("af-chat-sales");
 
   toggle.onclick = () => {
     box.style.display = box.style.display === "none" ? "block" : "none";
@@ -205,7 +188,7 @@
     fetch("https://chat-widget-test.onrender.com/json")
       .then(r => {
         if (r.status === 400) {
-          window.location = "https://api.whatsapp.com/send/?phone=27675974601";
+          support.onclick();
           return;
         }
 
@@ -219,21 +202,20 @@
               height="25"
               alt="Sales"
               style="
+                width:25px !important;
+                height:25px !important;
+                max-width:none !important;
+                max-height:none !important;
                 display:block;
-                width:25px;
-                height:25px;
+                flex-shrink:0;
                 border-radius:50%;
                 margin-right:8px;
-                flex-shrink:0;
               "
             >
             <div style="
               background:#f5f5f5;
               padding:10px;
               border-radius:20px;
-              font-family:inherit;
-              font-size:14px;
-              line-height:1.4;
               max-width:220px;
               box-sizing:border-box;
             ">
@@ -250,11 +232,9 @@
         wrap.style.marginTop = "10px";
 
         const meet = document.createElement("button");
-        meet.type = "button";
         meet.textContent = "Schedule a meeting with me";
         meet.style.cssText = `
           all:unset;
-          box-sizing:border-box;
           width:100%;
           padding:10px;
           border-radius:15px;
@@ -262,20 +242,17 @@
           background:#fff;
           color:#FBC100;
           font-size:14px;
-          line-height:1;
           cursor:pointer;
-          text-align:center;
           margin-bottom:6px;
+          text-align:center;
         `;
         meet.onclick = () => {
           window.location =
             "https://outlook.office.com/bookwithme/user/aea7a9c95b7a47668988fc5da0f9e845@amplifin.co.za?anonymous";
         };
 
-        const sup = document.createElement("button");
-        sup.type = "button";
+        const sup = meet.cloneNode(true);
         sup.textContent = "Chat with Support";
-        sup.style.cssText = meet.style.cssText;
         sup.onclick = support.onclick;
 
         wrap.append(meet, sup);
