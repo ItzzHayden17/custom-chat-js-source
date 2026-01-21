@@ -10,22 +10,37 @@
     bottom:20px;
     right:20px;
     z-index:9999;
+
+    /* 🔒 HARD BOUNDARY */
     font-family:Arial, sans-serif;
+    font-size:14px;
+    line-height:1.4;
+    font-weight:400;
+    color:#555;
     box-sizing:border-box;
+
+    text-size-adjust:none;
+    -webkit-text-size-adjust:none;
   ">
-    <button id="${id("toggle")}" style="
+
+    <button id="${id("toggle")}" type="button" style="
+      all:unset;
+      box-sizing:border-box;
       width:60px;
       height:60px;
       border-radius:50%;
-      border:none;
       background:#323345;
       color:#fff;
       font-size:28px;
       cursor:pointer;
       box-shadow:0 4px 12px rgba(0,0,0,.2);
+      display:flex;
+      align-items:center;
+      justify-content:center;
     ">💬</button>
 
     <div id="${id("box")}" style="
+      box-sizing:border-box;
       width:320px;
       height:420px;
       background:#fff;
@@ -36,7 +51,9 @@
       right:0;
       display:none;
       overflow:hidden;
-      font-family:Arial, sans-serif;
+      font-family:inherit;
+      font-size:inherit;
+      line-height:inherit;
     ">
 
       <!-- HEADER -->
@@ -44,8 +61,10 @@
         background:#323345;
         color:#fff;
         padding:10px 20px;
+        box-sizing:border-box;
+        font-family:inherit;
       ">
-        <div style="display:flex;flex-direction:row;">
+        <div style="display:flex;">
           <div style="display:flex;flex-direction:column;">
             <h1 style="
               margin:0;
@@ -53,11 +72,13 @@
               font-weight:600;
               letter-spacing:-0.45px;
               line-height:1.2;
+              font-family:inherit;
             ">
               <img
                 src="https://amplifin.co.za/wp-content/uploads/2022/09/Amplifin-Logo.png"
                 width="140"
                 height="25"
+                alt="Amplifin"
                 style="
                   display:block;
                   width:140px;
@@ -70,6 +91,7 @@
               margin:0;
               font-size:14px;
               line-height:14px;
+              font-family:inherit;
             ">How can we Amplify your day?</p>
           </div>
         </div>
@@ -77,25 +99,31 @@
 
       <!-- MESSAGES -->
       <div id="${id("messages")}" style="
+        box-sizing:border-box;
         padding:20px;
         height:300px;
         overflow-y:auto;
+        font-family:inherit;
         font-size:14px;
         line-height:1.4;
         color:#555;
-        box-sizing:border-box;
       ">
 
-        <div style="display:flex;flex-direction:row;align-items:flex-start;">
+        <div style="
+          display:flex;
+          align-items:flex-start;
+          box-sizing:border-box;
+        ">
           <img
             src="https://amplifin.co.za/wp-content/uploads/2025/07/Amplifin-Yellow-N-20px.png"
             width="25"
             height="25"
+            alt=""
             style="
+              display:block;
               width:25px;
               height:25px;
               margin:5px;
-              display:block;
               flex-shrink:0;
               object-fit:contain;
             "
@@ -104,10 +132,12 @@
             background:#f5f5f5;
             padding:10px;
             border-radius:20px;
+            font-family:inherit;
             font-size:14px;
             line-height:1.4;
             color:#555;
             max-width:220px;
+            box-sizing:border-box;
           ">
             Whether you’re looking for the right collection solution or need quick support, we’re here to help.<br><br>
             Click here to speak with our Support or Sales Team on WhatsApp.
@@ -119,25 +149,34 @@
           justify-content:flex-end;
           gap:6px;
           margin-top:10px;
+          box-sizing:border-box;
         ">
-          <button id="${id("support")}" style="
+          <button id="${id("support")}" type="button" style="
+            all:unset;
+            box-sizing:border-box;
             border:1px solid #FBC100;
             background:#fff;
             border-radius:15px;
             padding:10px 14px;
             color:#FBC100;
             font-size:14px;
+            line-height:1;
             cursor:pointer;
+            text-align:center;
           ">Support Team</button>
 
-          <button id="${id("sales")}" style="
+          <button id="${id("sales")}" type="button" style="
+            all:unset;
+            box-sizing:border-box;
             border:1px solid #FBC100;
             background:#fff;
             border-radius:15px;
             padding:10px 14px;
             color:#FBC100;
             font-size:14px;
+            line-height:1;
             cursor:pointer;
+            text-align:center;
           ">Sales Team</button>
         </div>
       </div>
@@ -178,7 +217,9 @@
               src="https://amplifin.zendesk.com/embeddable/avatars/20322948535964"
               width="25"
               height="25"
+              alt="Sales"
               style="
+                display:block;
                 width:25px;
                 height:25px;
                 border-radius:50%;
@@ -190,9 +231,11 @@
               background:#f5f5f5;
               padding:10px;
               border-radius:20px;
+              font-family:inherit;
               font-size:14px;
               line-height:1.4;
               max-width:220px;
+              box-sizing:border-box;
             ">
               Hello! This is Jessica from the Sales Team.<br><br>
               I am currently unavailable.<br><br>
@@ -207,8 +250,11 @@
         wrap.style.marginTop = "10px";
 
         const meet = document.createElement("button");
+        meet.type = "button";
         meet.textContent = "Schedule a meeting with me";
         meet.style.cssText = `
+          all:unset;
+          box-sizing:border-box;
           width:100%;
           padding:10px;
           border-radius:15px;
@@ -216,7 +262,9 @@
           background:#fff;
           color:#FBC100;
           font-size:14px;
+          line-height:1;
           cursor:pointer;
+          text-align:center;
           margin-bottom:6px;
         `;
         meet.onclick = () => {
@@ -225,6 +273,7 @@
         };
 
         const sup = document.createElement("button");
+        sup.type = "button";
         sup.textContent = "Chat with Support";
         sup.style.cssText = meet.style.cssText;
         sup.onclick = support.onclick;
