@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const NS = "afcw";
+  const NS = "afcw-v5";
   const ID = (x) => `${NS}-${x}`;
   const ROOT_ID = ID("root");
 
