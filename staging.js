@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const NS = "af-chat";
+  const NS = ""af-chat-v2"";
   const id = (v) => `${NS}-${v}`;
 
   const widgetHTML = `
