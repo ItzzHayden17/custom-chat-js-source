@@ -135,7 +135,7 @@
           </div>
         </div>
 
-        <div style="display:flex; flex-direction:row; justify-content:end; gap:6px; margin-top:10px;">
+        <div id="${ID("ctaRow")}" style="display:flex; flex-direction:row; justify-content:end; gap:6px; margin-top:10px;">
           <button id="${ID("support")}" type="button" style="outline:none; box-shadow:none; border:1px solid #FBC100;
               background:#fff; border-radius:15px; padding:10px; color:#FBC100; cursor:pointer; font-size:14px;">
             Support Team
@@ -162,6 +162,7 @@
   const support = root.querySelector(`#${CSS.escape(ID("support"))}`);
   const popup = root.querySelector(`#${CSS.escape(ID("popup"))}`);
   const popupText = root.querySelector(`#${CSS.escape(ID("popupText"))}`);
+  const ctaRow = root.querySelector(`#${CSS.escape(ID("ctaRow"))}`);
 
   chatBox.style.transition = "transform 260ms ease, opacity 260ms ease";
   chatBox.style.willChange = "transform, opacity";
@@ -184,28 +185,34 @@
     }, 220);
   }
 
+  var hidePopupState = true;
+
   function showPopup() {
     if (chatBox.style.display === "block") return; // don't show when chat is open
 
     if (!popup.dataset.firstShown) {
       popupText.textContent =
-         "Hi, I’m Jessica, I am online and here to assist with any product questions you may have.";
+        "Hi, I’m Jessica, I am online and here to assist with any product questions you may have.";
       popup.dataset.firstShown = "1";
     } else {
       popupText.textContent =
         "Selecting the correct collection and payment solution is essential to your business success, I am happy to answer any questions you may have and guide you through our solutions, or alternatively make contact with you telephonically.";
+      hidePopupState = false;
     }
 
     popup.style.display = "block";
     popup.offsetHeight; // reflow for transition
     popup.style.opacity = "1";
     popup.style.transform = "translateY(0)";
-    window.setTimeout(hidePopup, 8000);
+
+    if (hidePopupState) {
+      window.setTimeout(hidePopup, 8000);
+    }
   }
 
   // show once shortly after load, then every 15s while closed
-  window.setTimeout(showPopup, 1200);
-  setInterval(showPopup, 15000);
+  window.setTimeout(showPopup, 10000);
+  setInterval(showPopup, 20000);
   // --------------------------------------------
 
   chatToggle.style.transition = "transform 180ms ease";
@@ -264,13 +271,20 @@
       e.preventDefault();
       e.stopPropagation();
 
+      // ✅ FIX: spinner replaces the SALES button, then both spinner+sales are gone after response
+      // (Support button remains as the only CTA in that row)
+      const salesBtn = sales;
+      const parent = salesBtn.parentNode;
+
       const spinner = document.createElement("div");
       spinner.id = "afcw-spinner";
       spinner.style.cssText = `
+        width: 42px;
+        height: 42px;
         display:flex;
         justify-content:center;
         align-items:center;
-        margin-top:16px;
+        margin:0 5px;
       `;
       spinner.innerHTML = `
         <div style="
@@ -282,12 +296,18 @@
           animation: afcw-spin 0.9s linear infinite;
         "></div>
       `;
-      chatMessages.append(spinner);
+
+      // replace the sales button with spinner
+      parent.replaceChild(spinner, salesBtn);
+
+      function cleanupSpinnerOnly() {
+        const spinnerEl = root.querySelector("#afcw-spinner");
+        if (spinnerEl) spinnerEl.remove();
+      }
 
       fetch("https://chat-widget-test.onrender.com/json", { cache: "no-store" })
         .then(function (response) {
-          const spinnerEl = root.querySelector("#afcw-spinner");
-          if (spinnerEl) spinnerEl.remove();
+          cleanupSpinnerOnly(); // leaves ONLY the support button in the row
 
           if (response.status == 400) {
             go("https://api.whatsapp.com/send/?phone=27675974601");
@@ -364,8 +384,7 @@
           scrollToMessageId(chatMessages, "secondMsg");
         })
         .catch(function () {
-          const spinnerEl = root.querySelector("#afcw-spinner");
-          if (spinnerEl) spinnerEl.remove();
+          cleanupSpinnerOnly(); // leaves ONLY the support button in the row
           go("https://api.whatsapp.com/send/?phone=27675974601");
         });
     },
