@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const NS = "afcw-v5";
+  const NS = "afcw";
   const ID = (x) => `${NS}-${x}`;
   const ROOT_ID = ID("root");
 
@@ -30,7 +30,6 @@
     target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  // keyframes used by spinner
   const style = document.createElement("style");
   style.textContent = `
 @keyframes afcw-spin {
@@ -41,6 +40,29 @@
 
   const widgetHTML = `
   <div id="${ROOT_ID}" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; font-family: Arial, sans-serif; box-sizing: border-box; text-size-adjust:none; -webkit-text-size-adjust:none;">
+  
+    <div id="${ID("popup")}"
+         style="position:absolute; right:0; bottom:70px; width:300px;
+                display:none; opacity:0; transform:translateY(10px);
+                pointer-events:none; box-sizing:border-box;">
+      <div style="display:flex; align-items:flex-start; gap:10px;">
+        <img
+          src="https://amplifin.zendesk.com/embeddable/avatars/20322948535964"
+          width="34" height="34" alt="Jessica"
+          style="display:block; width:34px !important; height:34px !important;
+                 border-radius:999px; object-fit:cover; flex-shrink:0; border:0;">
+        <div style="position:relative; background:#ffffff; color:#323345; border-radius:14px;
+                    box-shadow:0 10px 30px rgba(0,0,0,0.15);
+                    padding:12px 14px; font-size:13px; line-height:1.25; box-sizing:border-box;">
+          <div id="${ID("popupText")}">
+            Selecting the correct collection and payment solution is essential to your business success, I am happy to answer any questions you may have and guide you through our solutions, or alternatively make contact with you telephonically.
+          </div>
+          <div style="position:absolute; left:-7px; top:16px; width:14px; height:14px; background:#fff;
+                      transform:rotate(45deg); box-shadow:-6px 6px 18px rgba(0,0,0,0.06);"></div>
+        </div>
+      </div>
+    </div>
+
     <button id="${ID("chatToggle")}" type="button"
       style="width:60px;height:60px;border-radius:50%;border:none;background:#FBC100;
              display:flex;align-items:center;justify-content:center;
@@ -138,6 +160,8 @@
   const chatMessages = root.querySelector(`#${CSS.escape(ID("chatMessages"))}`);
   const sales = root.querySelector(`#${CSS.escape(ID("sales"))}`);
   const support = root.querySelector(`#${CSS.escape(ID("support"))}`);
+  const popup = root.querySelector(`#${CSS.escape(ID("popup"))}`);
+  const popupText = root.querySelector(`#${CSS.escape(ID("popupText"))}`);
 
   chatBox.style.transition = "transform 260ms ease, opacity 260ms ease";
   chatBox.style.willChange = "transform, opacity";
@@ -146,8 +170,43 @@
   chatBox.style.pointerEvents = "none";
 
   function go(url) {
-    window.location.assign(url);
+    window.open(url, "_blank", "noopener,noreferrer");
   }
+
+  // ---- POPUP (works + message changes after first time) ----
+  popup.style.transition = "transform 220ms ease, opacity 220ms ease";
+
+  function hidePopup() {
+    popup.style.opacity = "0";
+    popup.style.transform = "translateY(10px)";
+    window.setTimeout(function () {
+      popup.style.display = "none";
+    }, 220);
+  }
+
+  function showPopup() {
+    if (chatBox.style.display === "block") return; // don't show when chat is open
+
+    if (!popup.dataset.firstShown) {
+      popupText.textContent =
+         "Hi, I’m Jessica, I am online and here to assist with any product questions you may have.";
+      popup.dataset.firstShown = "1";
+    } else {
+      popupText.textContent =
+        "Selecting the correct collection and payment solution is essential to your business success, I am happy to answer any questions you may have and guide you through our solutions, or alternatively make contact with you telephonically.";
+    }
+
+    popup.style.display = "block";
+    popup.offsetHeight; // reflow for transition
+    popup.style.opacity = "1";
+    popup.style.transform = "translateY(0)";
+    window.setTimeout(hidePopup, 8000);
+  }
+
+  // show once shortly after load, then every 15s while closed
+  window.setTimeout(showPopup, 1200);
+  setInterval(showPopup, 15000);
+  // --------------------------------------------
 
   chatToggle.style.transition = "transform 180ms ease";
 
@@ -165,6 +224,7 @@
   chatToggle.addEventListener(
     "click",
     function (e) {
+      hidePopup();
       e.preventDefault();
       e.stopPropagation();
 
@@ -204,34 +264,29 @@
       e.preventDefault();
       e.stopPropagation();
 
-      // Replace Sales button with spinner (and remove spinner permanently on response)
-      const salesBtn = sales;
-      const salesBtnParent = salesBtn.parentNode;
-
       const spinner = document.createElement("div");
       spinner.id = "afcw-spinner";
       spinner.style.cssText = `
-        width: 40px;
-        height: 40px;
         display:flex;
-        align-items:center;
         justify-content:center;
+        align-items:center;
+        margin-top:16px;
       `;
       spinner.innerHTML = `
         <div style="
-          width:22px;
-          height:22px;
+          width:24px;
+          height:24px;
           border:3px solid #FBC100;
           border-top-color: transparent;
           border-radius:50%;
           animation: afcw-spin 0.9s linear infinite;
         "></div>
       `;
-      salesBtnParent.replaceChild(spinner, salesBtn);
+      chatMessages.append(spinner);
 
       fetch("https://chat-widget-test.onrender.com/json", { cache: "no-store" })
         .then(function (response) {
-          const spinnerEl = document.getElementById("afcw-spinner");
+          const spinnerEl = root.querySelector("#afcw-spinner");
           if (spinnerEl) spinnerEl.remove();
 
           if (response.status == 400) {
@@ -309,7 +364,7 @@
           scrollToMessageId(chatMessages, "secondMsg");
         })
         .catch(function () {
-          const spinnerEl = document.getElementById("afcw-spinner");
+          const spinnerEl = root.querySelector("#afcw-spinner");
           if (spinnerEl) spinnerEl.remove();
           go("https://api.whatsapp.com/send/?phone=27675974601");
         });
