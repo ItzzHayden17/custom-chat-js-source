@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const NS = "afcw-v-6";
+  const NS = "afcw-v-7";
   const ID = (x) => `${NS}-${x}`;
   const ROOT_ID = ID("root");
 
@@ -78,7 +78,7 @@
     </button>
 
     <div id="${ID("chatBox")}"
-         style="width: 320px; height: 420px; background: white; border-radius: 14px;
+         style="width: 320px; height: 620px; background: white; border-radius: 14px;
                 box-shadow: 0 4px 18px rgba(0,0,0,0.15); position: absolute; bottom: 70px; right: 0;
                 display: none; overflow: hidden; font-family: Arial, sans-serif; box-sizing:border-box;">
 
@@ -109,7 +109,7 @@
       </div>
 
       <div id="${ID("chatMessages")}"
-           style="padding: 20px; height: 300px; overflow-y: auto; overflow-x:hidden; font-size: 14px; box-sizing:border-box;">
+           style="padding: 20px; height: 500px; overflow-y: auto; overflow-x:hidden; font-size: 14px; box-sizing:border-box;">
 
         <!-- Give the first block an ID so we can demonstrate scrolling by ID -->
         <div id="firstMsg" style="display:flex; flex-direction:row; align-items:flex-start;">
