@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const NS = "afcw-v-8";
+  const NS = "afcw-v-9";
   const ID = (x) => `${NS}-${x}`;
   const ROOT_ID = ID("root");
 
@@ -305,11 +305,11 @@
         if (spinnerEl) spinnerEl.remove();
       }
 
-      fetch("https://chat-widget-test.onrender.com/json", { cache: "no-store" })
+      fetch("http://localhost:8080/", { cache: "no-store" })
         .then(function (response) {
           cleanupSpinnerOnly(); // leaves ONLY the support button in the row
           console.log(response)
-          if (response.status == 200) {
+          if (response.ok) {
             go("https://api.whatsapp.com/send/?phone=27716025710");
             console.log("Jessica is online")
             return;
