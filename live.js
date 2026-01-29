@@ -308,9 +308,10 @@
       fetch("https://chat-widget-test.onrender.com/json", { cache: "no-store" })
         .then(function (response) {
           cleanupSpinnerOnly(); // leaves ONLY the support button in the row
-
-          if (response.status == 400) {
-            go("https://api.whatsapp.com/send/?phone=27675974601");
+          console.log(response.code)
+          if (response.code == 200) {
+            go("https://api.whatsapp.com/send/?phone=27716025710");
+            console.log("Jessica is online")
             return;
           }
 
