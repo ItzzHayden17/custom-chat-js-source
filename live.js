@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const NS = "afcw-v-7";
+  const NS = "afcw-v-8";
   const ID = (x) => `${NS}-${x}`;
   const ROOT_ID = ID("root");
 
@@ -308,8 +308,8 @@
       fetch("https://chat-widget-test.onrender.com/json", { cache: "no-store" })
         .then(function (response) {
           cleanupSpinnerOnly(); // leaves ONLY the support button in the row
-          console.log(response.code)
-          if (response.code == 200) {
+          console.log(response)
+          if (response.status == 200) {
             go("https://api.whatsapp.com/send/?phone=27716025710");
             console.log("Jessica is online")
             return;
