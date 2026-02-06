@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const NS = "afcw-v-10";
+  const NS = "afcw-v-1.13";
   const ID = (x) => `${NS}-${x}`;
   const ROOT_ID = ID("root");
 
@@ -54,9 +54,17 @@
         <div style="position:relative; background:#ffffff; color:#323345; border-radius:14px;
                     box-shadow:0 10px 30px rgba(0,0,0,0.15);
                     padding:12px 14px; font-size:13px; line-height:1.25; box-sizing:border-box;">
-          <div id="${ID("popupText")}">
+          <div id="${ID("popupText")}" style="position:relative">
+          
             Selecting the correct collection and payment solution is essential to your business success, I am happy to answer any questions you may have and guide you through our solutions, or alternatively make contact with you telephonically.
           </div>
+          <p id= "closePopupX" style="
+          position:absolute;
+          right:0;
+          top:0;
+          margin-top: -20px;
+          cursor:pointer;
+          ">x</p>
           <div style="position:absolute; left:-7px; top:16px; width:14px; height:14px; background:#fff;
                       transform:rotate(45deg); box-shadow:-6px 6px 18px rgba(0,0,0,0.06);"></div>
         </div>
@@ -71,7 +79,10 @@
            width="28" height="28"
            viewBox="0 0 24 24"
            fill="none"
-           aria-hidden="true">
+           aria-hidden="true"
+           role="button"
+           tabindex="0"
+           style="cursor:pointer;">
         <path d="M17 3.33782C15.5291 2.48697 13.8214 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22C17.5228 22 22 17.5228 22 12C22 10.1786 21.513 8.47087 20.6622 7"
               stroke="white" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
@@ -83,7 +94,7 @@
                 display: none; overflow: hidden; font-family: Arial, sans-serif; box-sizing:border-box;">
 
       <div style="background: #323345; color: white; padding: 10px 20px; font-size: 16px; font-weight: bold; box-sizing:border-box;">
-        <div style="display: flex; flex-direction: row;">
+        <div style="display: flex; flex-direction: row; align-items:center; justify-content:space-between; ">
           <div style="display: flex; flex-direction: column;">
             <h1 style="font-size: 1.125rem; font-weight: 600; letter-spacing: -0.028rem; margin:0 0 6px 0; padding:0; line-height:1.125rem;">
               <img
@@ -105,6 +116,19 @@
               How can we Amplify your day?
             </p>
           </div>
+          <svg id="closeBtn" xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 100 100"
+              width="30" height="30"
+              role="img" aria-label="Circle with X">
+            <!-- circle -->
+            <circle cx="50" cy="50" r="45" fill="none" stroke="#FBC100" stroke-width="4"/>
+            <!-- X (cross) -->
+            <g stroke="#FBC100" stroke-width="6" stroke-linecap="round">
+              <line x1="30" y1="30" x2="70" y2="70"/>
+              <line x1="70" y1="30" x2="30" y2="70"/>
+            </g>
+          </svg>
+
         </div>
       </div>
 
@@ -114,9 +138,9 @@
         <!-- Give the first block an ID so we can demonstrate scrolling by ID -->
         <div id="firstMsg" style="display:flex; flex-direction:row; align-items:flex-start;">
           <img
-            src="https://amplifin.co.za/wp-content/uploads/2025/07/Amplifin-Yellow-N-20px.png"
+            src="https://chat-widget-test.onrender.com/public/Amplifin_N.jpg"
             width="25"
-            height="25"
+            height="50"
             alt=""
             style="
               margin: 5px;
@@ -129,13 +153,30 @@
               flex-shrink:0;
               border:0;
             ">
-          <div style="color:#555;background:#f5f5f5;padding:10px;border-radius:20px; max-width:220px; overflow-wrap:anywhere; word-break:break-word; box-sizing:border-box;">
-            Whether you’re looking for the right collection solution or need quick support, we’re here to help.<br><br>
-            Click here to speak with our Support or Sales Team on WhatsApp.<br>
-          </div>
+<div style="
+  color:#555;
+  background:#f5f5f5;
+  padding:10px;
+  border-radius:20px;
+  max-width:220px;
+  box-sizing:border-box;
+
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  font-size:14px;
+  line-height:1.35;
+  letter-spacing:0;
+  -webkit-text-size-adjust:100%;
+  text-rendering:optimizeLegibility;
+
+  overflow-wrap:anywhere;
+  word-break:break-word;
+">
+  Whether you’re looking for the right collection solution or need quick support, we’re here to help.<br><br>
+  Click here to speak with our Support or Sales Team on WhatsApp.<br>
+</div>
         </div>
 
-        <div id="${ID("ctaRow")}" style="display:flex; flex-direction:row; justify-content:end; gap:6px; margin-top:10px;">
+        <div id="${ID("ctaRow")}" style="display:flex; flex-direction:row; justify-content:center; gap:6px; margin:10px 0;">
           <button id="${ID("support")}" type="button" style="outline:none; box-shadow:none; border:1px solid #FBC100;
               background:#fff; border-radius:15px; padding:10px; color:#FBC100; cursor:pointer; font-size:14px;">
             Support Team
@@ -162,7 +203,16 @@
   const support = root.querySelector(`#${CSS.escape(ID("support"))}`);
   const popup = root.querySelector(`#${CSS.escape(ID("popup"))}`);
   const popupText = root.querySelector(`#${CSS.escape(ID("popupText"))}`);
-  const ctaRow = root.querySelector(`#${CSS.escape(ID("ctaRow"))}`);
+  const closeBtn = document.getElementById("closeBtn");
+  // Use root.querySelector to find the X inside the widget (safer in constrained contexts)
+  const closePopupX = root.querySelector("#closePopupX");
+
+  if (closeBtn) closeBtn.style.cursor = "pointer";
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      chatToggle.click();
+    });
+  }
 
   chatBox.style.transition = "transform 260ms ease, opacity 260ms ease";
   chatBox.style.willChange = "transform, opacity";
@@ -178,6 +228,8 @@
   popup.style.transition = "transform 220ms ease, opacity 220ms ease";
 
   function hidePopup() {
+    // disable pointer events while hiding
+    popup.style.pointerEvents = "none";
     popup.style.opacity = "0";
     popup.style.transform = "translateY(10px)";
     window.setTimeout(function () {
@@ -187,33 +239,75 @@
 
   var hidePopupState = true;
 
-  function showPopup() {
-    if (chatBox.style.display === "block") return; // don't show when chat is open
+  let popupIntervalId = null;
+  let popupFirstTimeoutId = null;
+  let popupStopped = false;
 
-    if (!popup.dataset.firstShown) {
-      popupText.textContent =
-        "Hi, I’m Jessica, I am online and here to assist with any product questions you may have.";
-      popup.dataset.firstShown = "1";
-    } else {
-      popupText.textContent =
-        "Selecting the correct collection and payment solution is essential to your business success, I am happy to answer any questions you may have and guide you through our solutions, or alternatively make contact with you telephonically.";
-      hidePopupState = false;
+  // --- FIXED: attach the click handler to the close 'x' reliably ---
+  if (closePopupX) {
+    closePopupX.style.cursor = "pointer";
+    closePopupX.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      stopPopupsCompletely();
+    });
+  }
+
+  function stopPopupsCompletely() {
+    popupStopped = true;
+
+    if (popupFirstTimeoutId) {
+      clearTimeout(popupFirstTimeoutId);
+      popupFirstTimeoutId = null;
     }
 
-    popup.style.display = "block";
-    popup.offsetHeight; // reflow for transition
-    popup.style.opacity = "1";
-    popup.style.transform = "translateY(0)";
+    if (popupIntervalId) {
+      clearInterval(popupIntervalId);
+      popupIntervalId = null;
+    }
 
-    if (hidePopupState) {
+    hidePopup();
+  }
+
+  function showPopup() {
+    if (popupStopped) return;
+    if (chatBox.style.display === "block") return; // don't show when chat is open
+
+    const isFirst = !popup.dataset.firstShown;
+
+    // enable pointer events when visible so clicks reach children (important!)
+    popup.style.display = "block";
+    popup.style.pointerEvents = "auto"; // <-- critical so closePopupX receives clicks
+    popup.offsetHeight; // reflow for transition
+
+    if (isFirst) {
+      popupText.textContent =
+        "Hi, I’m Jessica, I am here to assist with any product questions you may have.";
+      popup.dataset.firstShown = "1";
+
+      // show transition
+      popup.style.opacity = "1";
+      popup.style.transform = "translateY(0)";
       window.setTimeout(hidePopup, 8000);
+    } else {
+      // LAST iteration message
+      popupText.textContent =
+        "Selecting the correct collection and payment solution is essential to your business success, I am happy to answer any questions you may have and guide you through our solutions, or alternatively make contact with you telephonically.";
+
+      // show it, then hide after 10s and stop forever
+      popup.style.opacity = "1";
+      popup.style.transform = "translateY(0)";
+
+      window.setTimeout(hidePopup, 10000); // hide after 10 sec
+
+      popupStopped = true; // prevent future popups
+      if (popupIntervalId) clearInterval(popupIntervalId);
+      return;
     }
   }
 
-  // show once shortly after load, then every 15s while closed
-  window.setTimeout(showPopup, 10000);
-  setInterval(showPopup, 20000);
-  // --------------------------------------------
+  popupFirstTimeoutId = window.setTimeout(showPopup, 10000);
+  popupIntervalId = window.setInterval(showPopup, 20000);
 
   chatToggle.style.transition = "transform 180ms ease";
 
@@ -234,6 +328,7 @@
       hidePopup();
       e.preventDefault();
       e.stopPropagation();
+      stopPopupsCompletely();
 
       const opening = chatBox.style.display === "none";
       if (opening) {
@@ -329,7 +424,24 @@
                      max-width:none !important; max-height:none !important;
                      object-fit:contain; flex-shrink:0; border:0;
                    ">
-              <div style="color:#555;background:#f5f5f5;padding:10px;border-radius:20px;margin-top:10px; max-width:220px; overflow-wrap:anywhere; box-sizing:border-box;">
+              <div style="
+                color:#555;
+                background:#f5f5f5;
+                padding:10px;
+                border-radius:20px;
+                max-width:220px;
+                box-sizing:border-box;
+
+                font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+                font-size:14px;
+                line-height:1.35;
+                letter-spacing:0;
+                -webkit-text-size-adjust:100%;
+                text-rendering:optimizeLegibility;
+
+                overflow-wrap:anywhere;
+                word-break:break-word;
+              ">
                 Hello! This is Jessica from the Sales Team.<br><br>
                 I am currently unavailable.<br><br>
                 You can chat with our Support Team, who will assist you and ensure that a Sales Consultant
